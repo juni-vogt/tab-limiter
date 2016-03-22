@@ -1,0 +1,31 @@
+{
+	"name": "Tab Limiter",
+	"description": "Limit the number of open tabs in total and in a single window",
+	"version": "0.1.0",
+
+	"icons": {
+		"48": "icons/48.png",
+		"128": "icons/128.png"
+	},
+
+	"browser_action": {
+		"default_icon": {
+			"48": "icons/48.png",
+			"128": "icons/128.png"
+		},
+		"default_popup": "options.html",
+		"default_title": "Tab Limiter"
+	},
+	"options_page": "options.html",
+	"background": {
+		"scripts": [
+			"background.js"
+		]
+	},
+	"permissions": [
+		"tabs",
+		"storage"
+	],
+
+	"manifest_version": 2
+}

@@ -1,0 +1,97 @@
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: sans-serif;
+  font-size: .8em;
+  min-width: 14em;
+}
+
+input {
+  font: inherit;
+}
+
+h1 {
+  font-size: 1.1em;
+}
+
+[type="text"],
+[type="number"] {
+  display: block;
+  width: 100%;
+  margin-bottom: .25em;
+}
+
+#options label {
+  margin-bottom: .75em;
+}
+
+#options label:after {
+  content: "";
+  display: block;
+  margin-bottom: .75em;
+}
+
+.isDependedOnByNextOption:not(:checked) + label + input,
+.isDependedOnByNextOption:not(:checked) + label + input + label {
+  opacity: .4;
+}
+
+#info {
+  position: fixed;
+  top: -2em;
+}
+
+#info + label,
+.container {
+  background: #eee;
+  border-radius: .4em;
+  padding: .4em;
+}
+
+.container {
+  display: none;
+  border-top-left-radius: 0;
+}
+
+#info:checked ~ .container {
+  display: inline-block;
+}
+
+#info:checked + label {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+dl {
+  margin: 0;
+}
+
+dt {
+  color: gray;
+}
+
+dd {
+  margin-left: 1.5em;
+}
+
+#status {
+  color: gray;
+  transition: opacity .1s ease 0s;
+}
+
+#status.notice {
+  color: green;
+}
+
+#status.hidden {
+  opacity: 0;
+  transition-delay: 1.75s;
+}
