@@ -2,6 +2,8 @@
 	"name": "Tab Limiter",
 	"description": "Limit the number of open tabs in total and in a single window",
 	"version": "0.1.0",
+	"author": "Matthias Vogt",
+  	"homepage_url": "https://github.com/matthias-vogt/tab-limiter",
 
 	"icons": {
 		"48": "icons/48.png",
