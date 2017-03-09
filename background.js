@@ -38,7 +38,7 @@ const windowTabs = options => new Promise(function(resolve, reject) {
     currentWindow: true,
     pinned: false
   }, function(tabs) {
-    if (tabs.length >= options.maxWindow) {
+    if (tabs.length > options.maxWindow) {
       resolve("window");
     }
   });
@@ -49,7 +49,7 @@ const totalTabs = options => new Promise(function(resolve, reject) {
     pinned: false
   }, function(tabs) {
     // Minimum of 1 allowed tab to prevent breaking chrome
-    if (tabs.length >= Math.max(options.maxTotal, 1)) {
+    if (tabs.length > Math.max(options.maxTotal, 1)) {
       resolve("total");
     }
   });
