@@ -20,12 +20,15 @@ const tabs = options => new Promise((resolve, reject) => {
 
 const updateBadge = options => new Promise((resolve, reject) => {
 
-  const setBadge = length => chrome.browserAction.setBadgeText({
-    text: length.toString()
-  })
+  const setBadge = max => length => {
+    count = max - length
+    chrome.browserAction.setBadgeText({
+      text: count.toString()
+    })
+  }
 
   if(options.displayBadge) {
-    options.currentWindowTabsLength.then(setBadge)
+    options.currentWindowTabsLength.then(setBadge(options.maxWindow))
   } else {
     setBadge("")
   }
