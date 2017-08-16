@@ -17,7 +17,9 @@ var saveOptions = function() {
 		values[input.id] = value;
 	};
 
-	chrome.storage.sync.set(values, function() {
+	const options = values;
+
+	chrome.storage.sync.set(options, function() {
 
 		// Update status to let user know options were saved.
 		var status = document.getElementById('status');
@@ -26,6 +28,22 @@ var saveOptions = function() {
 		setTimeout(function() {
 			status.className += ' hidden';
 		}, 100);
+
+
+		if (options.displayBadge) {
+			chrome.tabs.query({
+				currentWindow: true,
+				pinned: false
+			}, tabs => {
+				chrome.browserAction.setBadgeText({
+					text: options.maxWindow - tabs.length + ''
+				})
+			})
+		} else {
+			chrome.browserAction.setBadgeText({
+				text: ""
+			})
+		}
 	});
 }
 

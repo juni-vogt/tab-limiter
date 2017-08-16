@@ -27,7 +27,7 @@ const updateBadge = options => new Promise((resolve, reject) => {
 		})
 	}
 
-	if(options.displayBadge) {
+	if (options.displayBadge) {
 		options.currentWindowTabsLength.then(setBadge(options.maxWindow))
 	} else {
 		setBadge("")
