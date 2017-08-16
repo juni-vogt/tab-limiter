@@ -1,5 +1,29 @@
 var inputs;
 
+const windowRemaining = options => new Promise((resolve, reject) => {
+	chrome.tabs.query({
+		currentWindow: true,
+		pinned: false
+	}, tabs => resolve(options.maxWindow - tabs.length));
+});
+const totalRemaining = options => new Promise((resolve, reject) => {
+	chrome.tabs.query({
+		pinned: false
+	}, tabs => resolve(options.maxTotal - tabs.length));
+});
+
+const updateBadge = options => {
+	if (options.displayBadge) {
+		Promise.all([windowRemaining(options), totalRemaining(options)]).then(remaining => {
+			chrome.browserAction.setBadgeText({
+				text: Math.min(...remaining).toString()
+			})
+		})
+	} else {
+		chrome.browserAction.setBadgeText({ text: "" })
+	}
+}
+
 // Saves options to chrome.storage
 var saveOptions = function() {
 
@@ -17,7 +41,9 @@ var saveOptions = function() {
 		values[input.id] = value;
 	};
 
-	chrome.storage.sync.set(values, function() {
+	const options = values;
+
+	chrome.storage.sync.set(options, function() {
 
 		// Update status to let user know options were saved.
 		var status = document.getElementById('status');
@@ -26,6 +52,9 @@ var saveOptions = function() {
 		setTimeout(function() {
 			status.className += ' hidden';
 		}, 100);
+
+
+		updateBadge(options)
 	});
 }
 
