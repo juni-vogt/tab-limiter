@@ -1,5 +1,29 @@
 var inputs;
 
+const windowRemaining = options => new Promise((resolve, reject) => {
+	chrome.tabs.query({
+		currentWindow: true,
+		pinned: false
+	}, tabs => resolve(options.maxWindow - tabs.length));
+});
+const totalRemaining = options => new Promise((resolve, reject) => {
+	chrome.tabs.query({
+		pinned: false
+	}, tabs => resolve(options.maxTotal - tabs.length));
+});
+
+const updateBadge = options => {
+	if (options.displayBadge) {
+		Promise.all([windowRemaining(options), totalRemaining(options)]).then(remaining => {
+			chrome.browserAction.setBadgeText({
+				text: Math.min(...remaining).toString()
+			})
+		})
+	} else {
+		chrome.browserAction.setBadgeText({ text: "" })
+	}
+}
+
 // Saves options to chrome.storage
 var saveOptions = function() {
 
@@ -30,20 +54,7 @@ var saveOptions = function() {
 		}, 100);
 
 
-		if (options.displayBadge) {
-			chrome.tabs.query({
-				currentWindow: true,
-				pinned: false
-			}, tabs => {
-				chrome.browserAction.setBadgeText({
-					text: options.maxWindow - tabs.length + ''
-				})
-			})
-		} else {
-			chrome.browserAction.setBadgeText({
-				text: ""
-			})
-		}
+		updateBadge(options)
 	});
 }
 

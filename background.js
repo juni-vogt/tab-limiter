@@ -18,23 +18,29 @@ const tabs = options => new Promise((resolve, reject) => {
 })
 
 
-const updateBadge = options => new Promise((resolve, reject) => {
+const windowRemaining = options => new Promise((resolve, reject) => {
+	chrome.tabs.query({
+		currentWindow: true,
+		pinned: false
+	}, tabs => resolve(options.maxWindow - tabs.length));
+});
+const totalRemaining = options => new Promise((resolve, reject) => {
+	chrome.tabs.query({
+		pinned: false
+	}, tabs => resolve(options.maxTotal - tabs.length));
+});
 
-	const setBadge = max => length => {
-		count = max - length
-		chrome.browserAction.setBadgeText({
-			text: count.toString()
-		})
-	}
-
+const updateBadge = options => {
 	if (options.displayBadge) {
-		options.currentWindowTabsLength.then(setBadge(options.maxWindow))
+		Promise.all([windowRemaining(options), totalRemaining(options)]).then(remaining => {
+			chrome.browserAction.setBadgeText({
+				text: Math.min(...remaining).toString()
+			})
+		})
 	} else {
-		setBadge("")
+		chrome.browserAction.setBadgeText({ text: "" })
 	}
-
-	resolve(options)
-})
+}
 
 const windowTabs = options => new Promise(function(resolve, reject) {
 	chrome.tabs.query({
