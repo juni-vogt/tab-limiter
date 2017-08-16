@@ -1,48 +1,52 @@
 <!doctype html>
 
 <head>
-  <title>Tab Limiter's Popup</title>
+	<title>Tab Limiter's Popup</title>
 
-  <link rel="stylesheet" href="options.css">
-  <script src="options.js"></script>
+	<link rel="stylesheet" href="options.css">
+	<script src="options.js"></script>
 </head>
 
 <body>
-  <h1>Options</h1>
-  <div id="options">
-    <input id="maxTotal" type="number">
-    <label for="maxTotal">Max. total tabs</label>
+	<h1>Options</h1>
+	<div id="options">
+		<input id="maxTotal" type="number">
+		<label for="maxTotal">Max. total tabs</label>
 
-    <input id="maxWindow" type="number">
-    <label for="maxWindow">Max. tabs in one window</label>
+		<input id="maxWindow" type="number">
+		<label for="maxWindow">Max. tabs in one window</label>
 
-    <input id="displayBadge" type="checkbox">
-    <label for="displayBadge" id="displayBadgeLabel">Show remaining tabs</label>
+		<input id="displayBadge" type="checkbox">
+		<label for="displayBadge" id="displayBadgeLabel">Show remaining tabs</label>
 
-    <input class="isDependedOnByNextOption" id="displayAlert" type="checkbox">
-    <label for="displayAlert" id="displayAlertLabel">Display alert box</label>
+		<input class="isDependedOnByNextOption" id="displayAlert" type="checkbox">
+		<label for="displayAlert" id="displayAlertLabel">Display alert box</label>
 
-    <input id="alertMessage" type="text">
-    <label for="alertMessage">Alert box message</label>
-  </div>
+		<input id="alertMessage" type="text">
+		<label for="alertMessage">Alert box message</label>
+	</div>
 
 
-  <input id="info" type="checkbox">
-  <label for="info">{ Placeholders }</label>
-  <div class="container">
-    <p>You can use <code>{ <em>name</em> }</code> syntax for placeholders in the alert box message.</p>
-    <dl>
-      <dt>{ which }</dt>
-      <dd>"one window" or "total", depending on where there were too many tabs. If both, uses "total".</dd>
-      <dt>{ maxWhich }</dt>
-      <dd>maxTotal or maxWindow, depending on where there were too many tabs. If both, uses "total".</dd>
+	<input id="info" type="checkbox">
+	<label for="info">{ Placeholders }</label>
+	<div class="container">
+		<p>You can use <code>{ <em>name</em> }</code> syntax for placeholders in the alert box message.</p>
+		<dl>
+			<dt>{ which }</dt>
+			<dd>"one window" or "total", depending on where there were too many tabs. If both, uses "total".</dd>
+			<dt>{ maxWhich }</dt>
+			<dd>maxTotal or maxWindow, depending on where there were too many tabs. If both, uses "total".</dd>
 
-      <dt>{ maxTotal }</dt>
-      <dd>Max. number of total tabs</dd>
-      <dt>{ maxWindow }</dt>
-      <dd>Max. number of tabs in one window</dd>
-    </dl>
-  </div>
+			<dt>{ maxTotal }</dt>
+			<dd>Max. number of total tabs</dd>
+			<dt>{ maxWindow }</dt>
+			<dd>Max. number of tabs in one window</dd>
+		</dl>
+	</div>
 
-  <p id="status">Change values to update them</p>
+	<p id="status">Change values to update them</p>
+
+	<p class="message hidden">
+		Hi everybody! This extension unexpectedly got very popular (~18.000 users), so I just wanted to let you know that you can always suggest features and report bugs on the <a href="https://github.com/matthias-vogt/tab-limiter" target="_blank">github repo</a> :) Thanks for using Tab Limiter!
+	</p>
 </body>

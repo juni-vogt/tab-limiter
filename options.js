@@ -39,7 +39,7 @@ var saveOptions = function() {
 			input.value;
 
 		values[input.id] = value;
-	};
+	}
 
 	const options = values;
 
@@ -50,7 +50,7 @@ var saveOptions = function() {
 		status.className = 'notice';
 		status.textContent = 'Options saved.';
 		setTimeout(function() {
-			status.className += ' hidden';
+			status.className += ' invisible';
 		}, 100);
 
 
@@ -90,8 +90,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	for (var i = 0; i < onChangeInputs.length; i++) {
 		onChangeInputs[i].addEventListener('change', saveOptions);
-	};
+	}
 	for (var i = 0; i < onKeyupInputs.length; i++) {
 		onKeyupInputs[i].addEventListener('keyup', saveOptions);
-	};
+	}
+
+
+	// show special message
+
+	if (!localStorage.getItem('readMessage') && (new Date() < new Date('09-16-2017'))) {
+		document.querySelector('.message').classList.remove('hidden')
+		setTimeout(() => {
+			localStorage.setItem('readMessage', true)
+		}, 2000);
+	}
 });
+
+
+
+
