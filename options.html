@@ -3,6 +3,7 @@
 <head>
 	<title>Tab Limiter's Popup</title>
 
+	<meta charset="utf-8">
 	<link rel="stylesheet" href="options.css">
 	<script src="options.js"></script>
 </head>
@@ -10,14 +11,17 @@
 <body>
 	<h1>Options</h1>
 	<div id="options">
-		<input id="maxTotal" type="number">
+		<input id="maxTotal" type="number" min="1" max="1337">
 		<label for="maxTotal">Max. total tabs</label>
 
-		<input id="maxWindow" type="number">
+		<input id="maxWindow" type="number" min="1" max="1337">
 		<label for="maxWindow">Max. tabs in one window</label>
 
+		<input id="countPinnedTabs" type="checkbox">
+		<label for="countPinnedTabs" id="countPinnedTabsLabel">Count pinned tabs</label>
+
 		<input id="displayBadge" type="checkbox">
-		<label for="displayBadge" id="displayBadgeLabel">Show remaining tabs</label>
+		<label for="displayBadge" id="displayBadgeLabel">Show remaining tabs badge</label>
 
 		<input class="isDependedOnByNextOption" id="displayAlert" type="checkbox">
 		<label for="displayAlert" id="displayAlertLabel">Display alert box</label>
@@ -28,18 +32,18 @@
 
 
 	<input id="info" type="checkbox">
-	<label for="info">{ Placeholders }</label>
+	<label for="info">{Placeholders}</label>
 	<div class="container">
-		<p>You can use <code>{ <em>name</em> }</code> syntax for placeholders in the alert box message.</p>
+		<p>You can use <code>{<em>name</em>}</code> syntax for placeholders in the alert box message.</p>
 		<dl>
-			<dt>{ which }</dt>
+			<dt>{place}</dt>
 			<dd>"one window" or "total", depending on where there were too many tabs. If both, uses "total".</dd>
-			<dt>{ maxWhich }</dt>
+			<dt>{maxPlace}</dt>
 			<dd>maxTotal or maxWindow, depending on where there were too many tabs. If both, uses "total".</dd>
 
-			<dt>{ maxTotal }</dt>
+			<dt>{maxTotal}</dt>
 			<dd>Max. number of total tabs</dd>
-			<dt>{ maxWindow }</dt>
+			<dt>{maxWindow}</dt>
 			<dd>Max. number of tabs in one window</dd>
 		</dl>
 	</div>
@@ -47,6 +51,6 @@
 	<p id="status">Change values to update them</p>
 
 	<p class="message hidden">
-		Hi everybody! This extension unexpectedly got very popular (~18.000 users), so I just wanted to let you know that you can always suggest features and report bugs on the <a href="https://github.com/matthias-vogt/tab-limiter" target="_blank">github repo</a> :) Thanks for using Tab Limiter!
+		Hello everyone, welcome to version 0.3.0! See the changelog at the <a href="https://github.com/matthias-vogt/tab-limiter/releases" target="_blank">github repo</a>. Thanks for using Tab Limiter! :)
 	</p>
 </body>

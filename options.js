@@ -1,38 +1,49 @@
-var inputs;
+const browser = chrome || browser
 
-const windowRemaining = options => new Promise((resolve, reject) => {
-	chrome.tabs.query({
-		currentWindow: true,
-		pinned: false
-	}, tabs => resolve(options.maxWindow - tabs.length));
-});
-const totalRemaining = options => new Promise((resolve, reject) => {
-	chrome.tabs.query({
-		pinned: false
-	}, tabs => resolve(options.maxTotal - tabs.length));
-});
+const tabQuery = (options, params = {}) => new Promise(res => {
+	if (!options.countPinnedTabs) params.pinned = false // only non-pinned tabs
+	browser.tabs.query(params, tabs => res(tabs))
+})
+
+const windowRemaining = options =>
+	tabQuery(options, { currentWindow: true })
+		.then(tabs => options.maxWindow - tabs.length)
+
+const totalRemaining = options =>
+	tabQuery(options)
+		.then(tabs => options.maxTotal - tabs.length)
 
 const updateBadge = options => {
-	if (options.displayBadge) {
-		Promise.all([windowRemaining(options), totalRemaining(options)]).then(remaining => {
-			chrome.browserAction.setBadgeText({
-				text: Math.min(...remaining).toString()
-			})
-		})
-	} else {
-		chrome.browserAction.setBadgeText({ text: "" })
+	if (!options.displayBadge) {
+		browser.browserAction.setBadgeText({ text: "" })
+		return;
 	}
+
+	Promise.all([windowRemaining(options), totalRemaining(options)])
+	.then(remaining => {
+		// console.log(remaining)
+		// remaining = [remainingInWindow, remainingInTotal]
+		browser.browserAction.setBadgeText({
+			text: Math.min(...remaining).toString()
+		})
+	})
 }
 
-// Saves options to chrome.storage
-var saveOptions = function() {
+// ----------------------------------------------------------------------------
 
-	var values = {};
+let $inputs;
 
-	for (var i = 0; i < inputs.length; i++) {
-		var input = inputs[i];
 
-		var value =
+
+// Saves options to browser.storage
+const saveOptions = () => {
+
+	const values = {};
+
+	for (let i = 0; i < $inputs.length; i++) {
+		const input = $inputs[i];
+
+		const value =
 			input.type === "checkbox" ?
 			input.checked :
 
@@ -43,13 +54,13 @@ var saveOptions = function() {
 
 	const options = values;
 
-	chrome.storage.sync.set(options, function() {
+	browser.storage.sync.set(options, () => {
 
 		// Update status to let user know options were saved.
-		var status = document.getElementById('status');
+		const status = document.getElementById('status');
 		status.className = 'notice';
 		status.textContent = 'Options saved.';
-		setTimeout(function() {
+		setTimeout(() => {
 			status.className += ' invisible';
 		}, 100);
 
@@ -59,15 +70,15 @@ var saveOptions = function() {
 }
 
 // Restores select box and checkbox state using the preferences
-// stored in chrome.storage.
-var restoreOptions = function() {
-	chrome.storage.sync.get("defaultOptions", function(defaults) {
-		chrome.storage.sync.get(defaults.defaultOptions, function(options) {
+// stored in browser.storage.
+const restoreOptions = () => {
+	browser.storage.sync.get("defaultOptions", (defaults) => {
+		browser.storage.sync.get(defaults.defaultOptions, (options) => {
 
-			for (var i = 0; i < inputs.length; i++) {
-				var input = inputs[i];
+			for (let i = 0; i < $inputs.length; i++) {
+				const input = $inputs[i];
 
-				var valueType =
+				const valueType =
 					input.type === "checkbox" ?
 					"checked" :
 					"value";
@@ -78,27 +89,27 @@ var restoreOptions = function() {
 	});
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
 	restoreOptions();
 
-	inputs = document.querySelectorAll('#options input');
+	$inputs = document.querySelectorAll('#options input');
 
-	var onChangeInputs =
+	const onChangeInputs =
 		document.querySelectorAll('#options [type="checkbox"], #options [type="number"]');
-	var onKeyupInputs =
+	const onKeyupInputs =
 		document.querySelectorAll('#options [type="text"], #options [type="number"]');
 
-	for (var i = 0; i < onChangeInputs.length; i++) {
+	for (let i = 0; i < onChangeInputs.length; i++) {
 		onChangeInputs[i].addEventListener('change', saveOptions);
 	}
-	for (var i = 0; i < onKeyupInputs.length; i++) {
+	for (let i = 0; i < onKeyupInputs.length; i++) {
 		onKeyupInputs[i].addEventListener('keyup', saveOptions);
 	}
 
 
 	// show special message
 
-	if (!localStorage.getItem('readMessage') && (new Date() < new Date('09-16-2017'))) {
+	if (!localStorage.getItem('readMessage') && (new Date() < new Date('09-20-2020'))) {
 		document.querySelector('.message').classList.remove('hidden')
 		setTimeout(() => {
 			localStorage.setItem('readMessage', true)
