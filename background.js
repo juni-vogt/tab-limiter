@@ -133,8 +133,9 @@ const updateTabCount = () => new Promise(res => browser.tabs.query({}, tabs => {
 
 let passes = 0;
 
-const handleExceedTabs = (tab, options) => {
-	if (options.exceedTabNewWindow) {
+const handleExceedTabs = (tab, options, place) => {
+	console.log(place)
+	if (options.exceedTabNewWindow && place === "window") {
 		browser.windows.create({ tabId: tab.id, focused: true});
 	} else {
 		browser.tabs.remove(tab.id);
@@ -157,7 +158,7 @@ const handleTabCreated = tab => options => {
 		displayAlert(options, place) // alert about opening too many tabs
 		if (amountOfTabsCreated === 1) {
 			// if exactly one tab was created, remove this tab
-			handleExceedTabs(tab, options);
+			handleExceedTabs(tab, options, place);
 			app.update()
 		} else if (amountOfTabsCreated > 1) {
 			// if more than one tab was created, don't remove the tab and let
@@ -168,7 +169,7 @@ const handleTabCreated = tab => options => {
 		} else if (amountOfTabsCreated === -1) {
 			// if the users spams ctrl+t to create multiple tabs and one was
 			// just removed by this extension, remove the other tabs as well
-			handleExceedTabs(tab, options);
+			handleExceedTabs(tab, options, place);
 			app.update()
 		} else {
 			// should never happen
