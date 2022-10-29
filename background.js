@@ -15,7 +15,7 @@ const totalRemaining = options =>
 
 const updateBadge = options => {
 	if (!options.displayBadge) {
-		browser.browserAction.setBadgeText({ text: "" })
+		browser.action.setBadgeText({ text: "" })
 		return;
 	}
 
@@ -23,7 +23,7 @@ const updateBadge = options => {
 	.then(remaining => {
 		// console.log(remaining)
 		// remaining = [remainingInWindow, remainingInTotal]
-		browser.browserAction.setBadgeText({
+		browser.action.setBadgeText({
 			text: Math.min(...remaining).toString()
 		})
 	})
